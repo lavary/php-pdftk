@@ -11,11 +11,11 @@ To keep things simple enough, we'll refer to `PDFtk Server` as `PDFtk` through t
 
 ## Installation
 
-### Install PDFtk Server on Ubuntu:
+### Install PDFtk on Ubuntu:
 
 You can install `PDFtk` on Ubuntu via `apt-get` package manager. If you don't have access to a linux environment, you may use the [Homestead Improved Vagrant VM](https://github.com/Swader/homestead_improved/) to set up you own linux based development environment. This [quick tip](http://www.sitepoint.com/quick-tip-get-homestead-vagrant-vm-running/) will help you get up and running with a brand new Homestead Improved Vagrant VM.
 
-Once the VM is booted and you've successfully managed to ssh into the system, you may start installing the `PDFtk` using `apt-get`:
+Once the VM is booted and you've successfully managed to ssh into the system, you may start installing `PDFtk` using `apt-get`:
 
 ```
 sudo apt-get install pdftk
@@ -33,19 +33,19 @@ You should get something like the following output:
 Copyright (c) 2003-13 Steward and Lee, LLC - Please Visit:www.pdftk.com. This is free software; see the source code for copying conditions. There is NO warranty, not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ```
 
-For installing PDFtk on other machines, you may see the [`PDFtk Server`](https://www.pdflabs.com/tools/pdftk-server/) download page. It has all the required information to get you up and running in no time.
+For installing PDFtk on other machines, you may visit the [`PDFtk Server`](https://www.pdflabs.com/tools/pdftk-server/) download page. It has all the required information to get you up and running in no time.
 
 ## How It Works
 
-PDFtk provides a wide variety of features for manipulating PDF documents from merging and splitting pages to filling out PDF forms or even applying watermarks. In this article, we're going use PDFtk to fill out a standard PDF form dynamically using PHP.
+PDFtk provides a wide variety of features for manipulating PDF documents from merging and splitting pages to filling out PDF forms or even applying watermarks. In this article, we're going to use PDFtk to fill out a standard PDF form dynamically using PHP.
 
  PDFtk uses **FDF** files for manipulating PDF forms. FDF or **Form Data File** is a plain-text file, which can store form submitted data in a much simpler structure than PDF files.
 
-Simply put, we need to generate a FDF file from **user submitted data**, and merge it with the original PDF file using PDFtk's commands.
+Simply put, we need to generate an FDF file from **user submitted data**, and merge it with the original PDF file using PDFtk's commands.
 
 ### What Is Inside an FDF File
 
-The structure of a FDF file is composed of three parts: header, content and footer: 
+The structure of an FDF file is composed of three parts: header, content and footer: 
 
 **Header**
 
@@ -88,9 +88,9 @@ The content section is consisted of form data entries, each following the same p
 << /T(FIELD_NAME)/V(FIELD_VALUE) >>
 ```
 
-In order to create a FDF file, we will need to know the field names in the PDF form. If you have access to Mac or Windows machine, you may open the PDF form in Adobe Acrobat Pro, then click on each element to see the respective properties.
+In order to create an FDF file, we will need to know the field names in the PDF form. If you have access to a Mac or Windows machine, you may open the form in Adobe Acrobat Pro and see the field properties.
 
-Alternatively you can use PDFtk's `dump_data_fields` command to extract fields information from the file:
+Alternatively we can use PDFtk's `dump_data_fields` command to extract fields information from the file:
 
 ```
 pdftk path/to/the/form.pdf dump_data_fields > field_names.txt
@@ -183,7 +183,7 @@ unlink($FDFfile);
 
 Okay, let's break the script down. At First, we defined the values that we're going to write to the form. These values can be fetched from a database table, a JSON API response or even hardcoded in the file, as we just did for this example.
 
-Next we created a FDF file based on the pattern described earlier.  I used PHP's [tempnam](http://php.net/manual/en/function.tempnam.php) function to create a temporary file for storing the FDF content. The reasons is that PDFtk only relies on physical files to perform the operations, specially when filling out forms.
+Next we created an FDF file based on the pattern described earlier.  I used PHP's [tempnam](http://php.net/manual/en/function.tempnam.php) function to create a temporary file for storing the FDF content. The reasons is that PDFtk only relies on physical files to perform the operations, specially when filling out forms.
 
 Finally, we called the PDFtk's `fill_form` command using PHP's `exec` function. `fill_form` **merges** the FDF file with the raw PDF form. According to the script, our PDF file should be in the same directory of our script. However this path can be modified based on our needs.
 
@@ -343,7 +343,7 @@ As a convention, let's put an underscore prefix to each private method's name, j
 
 #### Extracting Form Information
 
-As noted earlier, to create a FDF file, we need to know the name of the fields in advance. This is possible either by opening the form in **Adobe Acrobat Pro** or alternatively by using PDFtk's  `dump_data_fields` command. 
+As noted earlier, to create an FDF file, we need to know the name of the fields in advance. This is possible either by opening the form in **Adobe Acrobat Pro** or alternatively by using PDFtk's  `dump_data_fields` command. 
 
 To make things easier for the developer, let's create a method which prints out field information to the screen. Although this method won't be used in the PDF generation process, but can be useful when we're not aware of the field names. Another use case would be parsing fields meta data to make the writing process more dynamic.
 
@@ -405,7 +405,7 @@ Header and footer parts as it is obvious in the code, are static contents and ne
 
 #### Filling Out the Form
 
-Now that we're able to create a FDF file, we can easily  fill the form using the `fill_form` command`:
+Now that we're able to create an FDF file, we can easily  fill the form using the `fill_form` command`:
 
 ```php
 <?php
@@ -540,9 +540,9 @@ $pdf->flatten()
 
 Data can be fetched from different sources like a database table, a JSON object or just an array as we did in above snippet.
 
-####Creating a FDF File
+####Creating an FDF File
 
-If we just need to create a FDF file without filling out a form, we can only use `make_fdf()` method.
+If we just need to create an FDF file without filling out a form, we can only use `make_fdf()` method.
 
 ```php
 <?php
