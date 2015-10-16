@@ -128,7 +128,7 @@ We can use PHP's `exec()` function to bring PDFtk to the PHP environment. Let's 
 
 Suppose we have a simple PDF form with 3 text boxes and a group of two radio buttons:
 
-Image here..
+[Blank PDF form](raw-form.jpg)
 
 Launch your favorite text editor and paste in the following code:
 
@@ -185,8 +185,7 @@ Finally, we called the PDFtk's `fill_form` command using PHP's `exec` function. 
 
 Save the file in your web root directory as `pdftk.php` or whatever name that feels right to you. The result will be a new PDF file with all the fields filled out with our data.
 
-Image Here
-
+[Filled PDF form](filled-form.jpg)
 
 As simple as that!
 
