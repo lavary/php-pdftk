@@ -64,6 +64,7 @@ A simple FDF content is as follows:
 << /T (first_name) /V (John)
 << /T (last_name) /V (Smith)
 << /T (occupation) /V (Teacher)>>
+<< /T (age) /V (45)>>
 << /T (gender) /V (male)>>
 ```
 
@@ -126,7 +127,7 @@ As you can see, there are several properties for each field in the form. This va
 
 We can use PHP's `exec()` function to bring PDFtk to the PHP environment. Let's write a simple script to fill out a form.
 
-Suppose we have a simple PDF form with 3 text boxes and a group of two radio buttons:
+Suppose we have a simple PDF form with 4 text boxes and a group of two radio buttons:
 
 ![Blank PDF form]
 (raw_form.jpg)
@@ -137,10 +138,11 @@ Launch your favorite text editor and paste in the following code:
 
 <?php
 
-$fname = 'John'
-$lname = 'Smith'
-$occupation   = 'Teacher';
-$gender = 'male'
+$fname      = 'John';
+$lname      = 'Smith';
+$occupation = 'Teacher';
+$age        = '45';
+$gender     = 'male';
 
 $fdf_header = <<<FDF
 %FDF-1.2
@@ -163,6 +165,7 @@ FDF;
 $fdf_content  = "<</T(first_name)/V({$fname})>>";
 $fdf_content .= "<</T(last_name)/V({$lname})>>";
 $fdf_content .= "<</T(occupation)/V({$occupation})>>";
+$fdf_content .= "<</T(age)/V({$age})>>";
 $fdf_content .= "<</T(gender)/V({$gender})>>";
 
 $content = $fdf_header . $fdf_content , $fdf_footer;
@@ -247,13 +250,14 @@ The usage of our final product should be as simple as the following code:
 
 // Data to be written to the PDF form
 $data = [
-    'first_Name' => 'John',
-    'last_Name'  => 'Smith',
+    'first_name' => 'John',
+    'last_name'  => 'Smith',
     'occupation' => 'Teacher',
+    'age'        => '45',
     'gender'     => 'male'
 ];
 
-$pdf = new pdfWriter('form.pdf', $data);
+$pdf = new pdfForm('form.pdf', $data);
 
 $pdf->flatten()
     ->save('outputs/form-filled.pdf')
@@ -263,7 +267,7 @@ $pdf->flatten()
 
 ### Creating the Class
 
-Open your favorite text editor, create a new file and name it **PDFWriter.php**. Let's name the class `PDFWriter` as well. 
+Open your favorite text editor, create a new file and name it **pdfForm.php**. Let's name the class `pdfForm` as well. 
 
 #### Starting With Class Properties
 
@@ -272,7 +276,7 @@ First of all, we need to declare some private properties for the class:
 ```php
 <?php
 
-class PDFWriter {
+class pdfForm {
 /*
  * Path to the raw PDF form
  * @var string
@@ -507,7 +511,7 @@ public function download() {
 
 In this method, first we need to check if the file has been generated because we might need to download the file without saving it. After making sure that everything is set, we can send the file's content to output buffer using PHP's `readfile()` function.
 
-And that is all there is to it! Our PDFWriter class is ready to use now. You can get the full code on [GitHub]()
+And that is all there is to it! Our pdfForm class is ready to use now. You can get the full code on [GitHub](https://github.com/lavary/pdf-form)
 
 ### Putting the Class Into Action
 
@@ -517,16 +521,17 @@ To use the class, first we need to make sure it is loaded before using it either
 
 ```php
 <?php
-require 'pdfWriter.php';
+require 'pdfForm.php';
 
 $data = [
-    'first_Name' => 'John',
-    'last_Name'  => 'Smith',
+    'first_name' => 'John',
+    'last_name'  => 'Smith',
     'occupation' => 'Teacher',
+    'age'        => '45',
     'gender'     => 'male'
 ];
 
-$pdf = new pdfWriter('form.pdf', $data);
+$pdf = new pdfForm('form.pdf', $data);
 
 $pdf->flatten()
     ->save('output.pdf')
@@ -541,16 +546,17 @@ If we just need to create a FDF file without filling out a form, we can only use
 
 ```php
 <?php
-require 'pdfWriter.php';
+require 'pdfForm.php';
 
 $data = [
-    'first_Name' => 'John',
-    'last_Name'  => 'Smith',
+    'first_name' => 'John',
+    'last_name'  => 'Smith',
     'occupation' => 'Teacher',
+    'age'        => '45',
     'gender'     => 'male'
 ];
 
-$pdf = new pdfWriter('form.pdf', $data);
+$pdf = new pdfForm('form.pdf', $data);
 
 $fdf = $pdf->make_fdf();
 ```
@@ -563,9 +569,9 @@ If we just need to see what fields and field types exist in the form,  we can ca
 ```php
 <?php
 
-require 'PDFWriter.php';
+require 'pdfForm.php';
 
-$fields = new PDFWriter('form.pdf')->fields();
+$fields = new pdfForm('form.pdf')->fields();
 
 echo $fields;
 
@@ -576,9 +582,9 @@ If there's no need to parse the output, we can pass `true` to the `fields()` met
 ```php
 <?php
 
-require 'PDFWriter.php';
+require 'pdfForm.php';
 
-$pdf = new PDFWriter('pdf-test.pdf')->fields(true);
+$pdf = new pdfForm('pdf-test.pdf')->fields(true);
 
 echo $pdf;
 
